@@ -17,13 +17,5 @@
     "axios": "^0.26.1",
     "fastify": "^3.27.4",
     "fastify-cors": "^6.0.3"
-  },
-  "devDependencies": {
-    "@eslint/create-config": "^0.1.2",
-    "eslint": "^8.11.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.0.0"
   }
 }
