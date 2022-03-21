@@ -3,8 +3,15 @@ const fastify = require('fastify')({ logger: true })
 const getPokemonInfo = require('./api/pokemonInfo.js')
 const pokemonsList = require('./api/pokemonsList.js')
 
+const PORT = process.env.PORT || 3000
+
+fastify.register(require('fastify-cors'), {
+  origin: ['*'],
+  methods: ['GET', 'POST']
+})
+
 // Endpoint for all pokemons
-fastify.get('/api', async (req, res) => {
+fastify.get('/api/pokemons', async (req, res) => {
   const pokemons = await pokemonsList({})
 
   return { pokemons }
@@ -20,7 +27,7 @@ fastify.get('/api/pokemon/:pokemon', async (req, res) => {
 
 const start = async () => {
   try {
-    await fastify.listen(3000)
+    await fastify.listen(PORT)
   } catch (error) {
     fastify.log.error(error)
     process.exit(1)
