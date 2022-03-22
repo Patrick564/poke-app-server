@@ -12,9 +12,9 @@ fastify.register(require('fastify-cors'), {
 })
 
 // Endpoint for all pokemons
-fastify.get('/api/pokemons/:list', async (req, res) => {
-  const list = req.params.list ? req.params : {}
-  const pokemons = await pokemonsList(list)
+fastify.get('/api/pokemons', async (req, res) => {
+  const next = req.query.next ? req.query : {}
+  const pokemons = await pokemonsList(next)
 
   return { pokemons }
 })

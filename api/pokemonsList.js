@@ -2,18 +2,18 @@ const axios = require('axios').default
 
 const getPokemonInfo = require('./pokemonInfo.js')
 
-const pokemonsList = async ({ url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20' }) => {
-  const info = await axios.get(url)
+const pokemonsList = async ({ next = 0 }) => {
+  const info = await axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=${next}&limit=20`)
 
   // Get next url for pokemons list and retrive main info of every pokemon
-  const next = info.data.next
+  const nextUrl = new URL(info.data.next).searchParams.get('offset')
   const pokemonsInfo = await Promise.all(info.data.results.map(async (pokemon) => {
     const { name, frontDefault, id, types } = await getPokemonInfo({ pokemon: pokemon.name })
 
     return { name, frontDefault, id, types }
   }))
 
-  return { next, pokemonsInfo }
+  return { nextUrl, pokemonsInfo }
 }
 
 module.exports = pokemonsList
