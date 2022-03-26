@@ -1,14 +1,14 @@
-const getPokemonInfo = require('./api/pokemonInfo.js')
+const getPokemonInfo = require('../../api/pokemonInfo.js')
 
-const pokemon = {
-  url: '/api/pokemon:name',
+const pokemonRoute = {
+  url: '/api/pokemon',
   method: 'GET',
   handler: async (req, rep) => {
-    const name = req.params.name ? req.params : {}
-    const pokemon = await getPokemonInfo(name)
+    const name = req.query.name ? req.query.name : {}
+    const pokemon = await getPokemonInfo({ pokemon: name })
 
     return { ...pokemon }
   }
 }
 
-module.exports = pokemon
+module.exports = pokemonRoute

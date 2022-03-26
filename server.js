@@ -1,60 +1,59 @@
 const fastify = require('fastify')({ logger: true })
 const fastifyFormbody = require('fastify-formbody')
 const fastifyCors = require('fastify-cors')
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 
 const connector = require('./database/db.js')
-const userModel = require('./schemas/userSchema.js')
+// const userModel = require('./schemas/userSchema.js')
 
 const route = require('./routes/register.routes.js')
+const pokemonRoute = require('./routes/pokemon/pokemon.routes.js')
+const pokemons = require('./routes/pokemon/pokemons.routes.js')
 
-const getPokemonInfo = require('./api/pokemonInfo.js')
-const pokemonsList = require('./api/pokemonsList.js')
+// const PORT = process.env.PORT || 3000
+// const HOST = process.env.HOST || '127.0.0.1'
 
-const PORT = process.env.PORT || 3000
-const HOST = process.env.HOST || '127.0.0.1'
+// fastify.get('/api/user/register', async (req, rep) => {
+// const a = await userModel.create({ name: 'Ejemplo2', id: 'ioio', email: 'a@bailo.com', picture: 'Iooo' })
+// const b = await userModel.findByIdAndUpdate(mongoose.Types.ObjectId('623d2d43766a6a69623f7c35'), { $push: { favorites: 134 } })
 
-fastify.register(fastifyCors, {
-  origin: ['*'],
-  methods: ['GET', 'POST']
-})
-fastify.register(fastifyFormbody)
-fastify.register(connector)
+// console.log(b)
+// console.log(b)
+// return { res: 'hi' }
+// })
 
-fastify.route(route)
+const init = () => {
+  const app = fastify()
 
-fastify.get('/api/user/register', async (req, rep) => {
-  // const a = await userModel.create({ name: 'Ejemplo2', id: 'ioio', email: 'a@bailo.com', picture: 'Iooo' })
-  const b = await userModel.findByIdAndUpdate(mongoose.Types.ObjectId('623d2d43766a6a69623f7c35'), { $push: { favorites: 134 } })
+  app.register(fastifyCors, {
+    origin: ['*'],
+    methods: ['GET', 'POST']
+  })
+  app.register(fastifyFormbody)
+  app.register(connector)
 
-  console.log(b)
-  // console.log(b)
-  return { res: 'hi' }
-})
-
-// Endpoint for all pokemons
-fastify.get('/api/pokemons', async (req, res) => {
-  const next = req.query.next ? req.query : {}
-  const pokemons = await pokemonsList(next)
-
-  return { pokemons }
-})
-
-// Endpoint for general pokemon info
-fastify.get('/api/pokemon/:pokemon', async (req, res) => {
-  const pokemon = req.params.pokemon ? req.params : {}
-  const pokemonInfo = await getPokemonInfo(pokemon)
-
-  return { pokemonInfo }
-})
-
-const start = async () => {
-  try {
-    await fastify.listen(PORT, HOST)
-  } catch (error) {
-    fastify.log.error(error)
-    process.exit(1)
-  }
+  app.route(route)
+  app.route(pokemonRoute)
+  app.route(pokemons)
 }
 
-start()
+if (require.main === module) {
+  init().listen(3000, (err) => {
+    if (err) console.error(err)
+
+    console.log('server listening on 3000')
+  })
+} else {
+  module.exports = init
+}
+
+// const start = async () => {
+//   try {
+//     await fastify.listen(PORT, HOST)
+//   } catch (error) {
+//     fastify.log.error(error)
+//     process.exit(1)
+//   }
+// }
+
+// start()
