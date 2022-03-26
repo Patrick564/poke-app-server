@@ -1,4 +1,4 @@
-const fastify = require('fastify')({ logger: true })
+const fastify = require('fastify')
 const fastifyFormbody = require('fastify-formbody')
 const fastifyCors = require('fastify-cors')
 // const mongoose = require('mongoose')
@@ -22,29 +22,33 @@ const pokemons = require('./routes/pokemon/pokemons.routes.js')
 // return { res: 'hi' }
 // })
 
-const init = () => {
-  const app = fastify()
+// const init = () => {
+const app = fastify({ logger: true })
 
-  app.register(fastifyCors, {
-    origin: ['*'],
-    methods: ['GET', 'POST']
-  })
-  app.register(fastifyFormbody)
-  app.register(connector)
+app.register(fastifyCors, {
+  origin: ['*'],
+  methods: ['GET', 'POST']
+})
+app.register(fastifyFormbody)
+app.register(connector)
 
-  app.route(route)
-  app.route(pokemonRoute)
-  app.route(pokemons)
-}
+app.route(route)
+app.route(pokemonRoute)
+app.route(pokemons)
+
+// app.get('/', (res, rep) => rep.send({ i: 9 }))
+
+//   return app
+// }
 
 if (require.main === module) {
-  init().listen(3000, (err) => {
+  app.listen(3000, (err) => {
     if (err) console.error(err)
 
     console.log('server listening on 3000')
   })
 } else {
-  module.exports = init
+  module.exports = app
 }
 
 // const start = async () => {

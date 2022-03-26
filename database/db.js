@@ -1,10 +1,11 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 const fastifyPlugin = require('fastify-plugin')
 
 const connector = async (fastify, options) => {
   try {
     await mongoose.connect(
-      'mongodb+srv://pokeapp:17tWF9TrwXuxB1KE@cluster0.3htrq.mongodb.net/pokeapp?retryWrites=true&w=majority',
+      process.env.MONGO_ATLAS_URL,
       { useNewUrlParser: true, useUnifiedTopology: true }
     )
 

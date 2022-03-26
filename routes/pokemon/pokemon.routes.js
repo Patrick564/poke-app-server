@@ -3,11 +3,11 @@ const getPokemonInfo = require('../../api/pokemonInfo.js')
 const pokemonRoute = {
   url: '/api/pokemon',
   method: 'GET',
-  handler: async (req, rep) => {
-    const name = req.query.name ? req.query.name : {}
-    const pokemon = await getPokemonInfo({ pokemon: name })
+  handler: async (request, reply) => {
+    const name = request.query.name ? request.query.name : {}
+    const pokemon = getPokemonInfo({ pokemon: name })
 
-    return { ...pokemon }
+    reply.send({ ...pokemon })
   }
 }
 
