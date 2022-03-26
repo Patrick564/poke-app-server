@@ -25,5 +25,13 @@
     "fastify-mongoose-api": "^1.1.10",
     "fastify-plugin": "^3.0.1",
     "mongoose": "^6.2.8"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "nodemon": "^2.0.15"
   }
 }
