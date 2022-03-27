@@ -1,8 +1,14 @@
+const userModel = require('../schemas/userSchema.js')
+
 const route = {
-  url: '/api/user',
-  method: 'GET',
-  handler: async (req, rep) => {
-    return { a: 'eeee' }
+  url: '/api/user/register',
+  method: 'POST',
+  handler: async (request, reply) => {
+    const { id, name, email, picture } = request.body
+    // const search = await userModel.find({ id })
+    const user = await userModel.create({ gid: id, name, email, picture })
+
+    reply.send({ gid: id, id: user._id, status: 'Successful' })
   }
 }
 
