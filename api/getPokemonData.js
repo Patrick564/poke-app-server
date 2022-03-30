@@ -1,6 +1,6 @@
 const axios = require('axios').default
 
-const getPokemonInfo = async ({ pokemon = 'ditto' }) => {
+const getPokemonData = async ({ pokemon = 'ditto' }) => {
   const info = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
 
   // Get specific sprites
@@ -22,4 +22,4 @@ const getPokemonInfo = async ({ pokemon = 'ditto' }) => {
   return { frontDefault, frontFemale, frontShiny, stats, types, id, name }
 }
 
-module.exports = getPokemonInfo
+module.exports = getPokemonData

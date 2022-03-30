@@ -5,7 +5,6 @@ const route = {
   method: 'POST',
   handler: async (request, reply) => {
     const { id, name, email, picture } = request.body
-    // const search = await userModel.find({ id })
     const user = await userModel.create({ gid: id, name, email, picture })
 
     reply.send({ gid: id, id: user._id, status: 'Successful' })

@@ -1,7 +1,7 @@
 const fastifyPlugin = require('fastify-plugin')
 
 const favoritesRoute = async (fastify, options) => {
-  const { User } = fastify.db
+  const { User } = fastify.mongo
 
   fastify.get('/api/user/:id/favorites', async (request, reply) => {
     const { id } = request.params
