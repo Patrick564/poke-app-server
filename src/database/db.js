@@ -14,12 +14,11 @@ const connector = async (fastify, options) => {
       console.log('Database disconnected...')
     })
 
-    await mongoose.connect(
-      process.env.MONGO_ATLAS_URL,
-      { useNewUrlParser: true, useUnifiedTopology: true }
-    )
+    await mongoose.connect(process.env.MONGO_ATLAS_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
 
-    // @todo Change name [db -> mongo] and better order
     fastify.decorate('mongo', {
       conn: mongoose.connection,
       User

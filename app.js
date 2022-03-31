@@ -1,32 +1,19 @@
+// Fastify imports
 const fastify = require('fastify')
 const fastifyFormbody = require('fastify-formbody')
 const fastifyCors = require('fastify-cors')
 
-const connector = require('./database/db.js')
+// Database imports
+const connector = require('./src/database/db.js')
 
-const route = require('./routes/register.routes.js')
-const loginRoute = require('./routes/login.routes.js')
-const pokemonRoute = require('./routes/pokemon.routes.js')
-const favoritesRoute = require('./routes/favorites.routes.js')
-
-// Plugins
-// fastify.register(fastifyCors, {
-//   origin: ['*'],
-//   methods: ['GET', 'POST']
-// })
-// fastify.register(fastifyFormbody)
-// fastify.register(connector)
-
-// Routes
-// fastify.register(favoritesRoute)
-// fastify.register(pokemonRoute)
-
-// fastify.route(route)
-// fastify.route(loginRoute)
+// Routes imports
+const pokemonRoutes = require('./src/routes/pokemon.routes.js')
+const userRoutes = require('./src/routes/user.routes')
 
 const build = (opts = {}) => {
   const app = fastify(opts)
 
+  // Pluggins
   app.register(fastifyCors, {
     origin: ['*'],
     methods: ['GET', 'POST']
@@ -34,14 +21,13 @@ const build = (opts = {}) => {
   app.register(fastifyFormbody)
   app.register(connector)
 
-  app.register(favoritesRoute)
-  app.register(pokemonRoute)
+  // Routes
+  app.register(userRoutes)
+  app.register(pokemonRoutes)
 
-  app.route(route)
-  app.route(loginRoute)
-  app.get('/api', async (request, reply) => {
-    return { hi: 'Puuuuu' }
-  })
+  // app.get('/api', async (request, reply) => {
+  //   return { hi: 'Plugins' }
+  // })
 
   return app
 }

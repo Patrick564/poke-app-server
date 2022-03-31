@@ -1,6 +1,6 @@
-const build = require('../app.js')
+const build = require('../../app.js')
 
-describe('Pokemon routes test [ GET /api/pokemon | /api/pokemon/list ]', () => {
+describe('Database mongodb for connection test', () => {
   const app = build()
 
   afterAll(async () => {
