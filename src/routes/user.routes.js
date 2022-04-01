@@ -31,7 +31,7 @@ const favoritesRoute = async (fastify, options) => {
   fastify.post('/api/user/:id/favorites/add', async (request, reply) => {
     const { id } = request.params
     const { favorites } = request.body
-    const query = await User.findOneAndUpdate({ gid: id }, { $push: { favorites } })
+    const query = await User.findOneAndUpdate({ gid: id }, { $push: { favorites: { $each: favorites } } })
 
     reply.send({ message: 'Successful added', query })
   })
