@@ -15,10 +15,10 @@ const favoritesRoute = async (fastify, options) => {
     const search = await User.findOne({ gid: id })
 
     if (!search) {
-      reply.send({ code: 'NOEXIST', status: 'User is no register, redirect...' })
+      reply.send({ exist: false, status: 'User is no register' })
     }
 
-    reply.send({ code: 'EXIST', status: 'User already exist.' })
+    reply.send({ exist: true, status: 'User already exist' })
   })
 
   fastify.get('/api/user/:id/favorites', async (request, reply) => {
