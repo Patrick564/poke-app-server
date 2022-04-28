@@ -5,35 +5,69 @@ const favoritesRoute = async (fastify, options) => {
 
   fastify.post('/api/user/register', async (request, reply) => {
     const { id, name, email, picture } = request.body
-    const user = await User.create({ gid: id, name, email, picture })
 
-    reply.send({ gid: id, id: user._id, status: 'Successful' })
+    try {
+      const user = await User.create({ gid: id, name, email, picture })
+
+      // gid: id, id: user._id
+      reply.send({ status: true, user, message: 'successfull' })
+    } catch (error) {
+      reply.send({ status: false, message: 'error', error })
+    }
   })
 
   fastify.post('/api/user/login', async (request, reply) => {
     const { id } = request.body
-    const search = await User.findOne({ gid: id })
 
-    if (!search) {
-      reply.send({ exist: false, status: 'User is no register' })
+    try {
+      const search = await User.findOne({ gid: id })
+
+      if (!search) {
+        reply.send({ status: true, exist: false, message: 'User is no register' })
+      }
+
+      reply.send({ status: true, exist: true, message: 'User already exist' })
+    } catch (error) {
+      reply.send({ status: false, message: 'error', error })
     }
-
-    reply.send({ exist: true, status: 'User already exist' })
   })
 
   fastify.get('/api/user/:id/favorites', async (request, reply) => {
     const { id } = request.params
-    const { favorites } = await User.findOne({ gid: id })
 
-    reply.send({ message: 'Successful', favorites })
+    try {
+      const { favorites } = await User.findOne({ gid: id })
+
+      reply.send({ status: true, message: 'successfull', favorites })
+    } catch (error) {
+      reply.send({ status: false, message: 'error', error })
+    }
   })
 
   fastify.post('/api/user/:id/favorites/add', async (request, reply) => {
     const { id } = request.params
     const { favorites } = request.body
-    const query = await User.findOneAndUpdate({ gid: id }, { $push: { favorites: { $each: favorites } } })
 
-    reply.send({ message: 'Successful added', query })
+    try {
+      const added = await User.findOneAndUpdate({ gid: id }, { $push: { favorites: { $each: favorites } } })
+
+      reply.send({ status: true, message: 'successfull favorite added', added })
+    } catch (error) {
+      reply.send({ status: false, message: 'error', error })
+    }
+  })
+
+  fastify.post('/api/user/:id/favorites/delete', async (request, reply) => {
+    const { id } = request.params
+    const { favorites } = request.body
+
+    try {
+      const removed = await User.findOneAndUpdate({ gid: id }, { $pull: { favorites: { $each: favorites } } })
+
+      reply.send({ status: true, message: 'successfull favorite removed', removed })
+    } catch (error) {
+      reply.send({ status: false, message: 'error', error })
+    }
   })
 }
 
