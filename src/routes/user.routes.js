@@ -49,16 +49,17 @@ const favoritesRoute = async (fastify, options) => {
     const { favorites } = request.body
 
     try {
-      const added = await User.findOneAndUpdate(
+      const updated = await User.findOneAndUpdate(
         { gid: id },
-        {
-          $push:
-            { favorites: { $each: favorites } }
-        },
+        { $push: { favorites: favorites } },
         { returnOriginal: false }
       )
 
-      reply.send({ status: true, message: 'successfull favorite added', added })
+      reply.send({
+        status: true,
+        message: 'successfull favorite added',
+        updated: updated.favorites
+      })
     } catch (error) {
       reply.send({ status: false, message: 'error', error })
     }
@@ -69,16 +70,17 @@ const favoritesRoute = async (fastify, options) => {
     const { favorites } = request.body
 
     try {
-      const removed = await User.findOneAndUpdate(
+      const updated = await User.findOneAndUpdate(
         { gid: id },
-        {
-          $pull:
-            { favorites: { $each: favorites } }
-        },
+        { $pull: { favorites: favorites } },
         { returnOriginal: false }
       )
 
-      reply.send({ status: true, message: 'successfull favorite removed', removed })
+      reply.send({
+        status: true,
+        message: 'successfull favorite removed',
+        updated: updated.favorites
+      })
     } catch (error) {
       reply.send({ status: false, message: 'error', error })
     }
