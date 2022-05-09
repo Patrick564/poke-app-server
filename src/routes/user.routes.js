@@ -46,12 +46,12 @@ const favoritesRoute = async (fastify, options) => {
 
   fastify.post('/api/user/:id/favorites/add', async (request, reply) => {
     const { id } = request.params
-    const { favorites } = request.body
+    const { favorite } = request.body
 
     try {
       const updated = await User.findOneAndUpdate(
         { gid: id },
-        { $push: { favorites: favorites } },
+        { $push: { favorites: favorite } },
         { returnOriginal: false }
       )
 
@@ -67,12 +67,12 @@ const favoritesRoute = async (fastify, options) => {
 
   fastify.post('/api/user/:id/favorites/delete', async (request, reply) => {
     const { id } = request.params
-    const { favorites } = request.body
+    const { favorite } = request.body
 
     try {
       const updated = await User.findOneAndUpdate(
         { gid: id },
-        { $pull: { favorites: favorites } },
+        { $pull: { favorites: { name: favorite } } },
         { returnOriginal: false }
       )
 
